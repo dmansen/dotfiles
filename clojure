@@ -1,0 +1,4 @@
+#!/bin/bash
+
+#java -cp /home/derek/code/clojure/clojure/clojure.jar:/home/derek/code/clojure/clojure/jline-0_9_5.jar jline.ConsoleRunner clojure.main $@
+java -cp /home/derek/code/clojure/clojure/clojure.jar:/home/derek/code/clojure/clojure/jline-0_9_5.jar jline.ConsoleRunner clojure.main
