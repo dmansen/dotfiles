@@ -1,17 +1,21 @@
+
+; load path section
 (add-to-list 'load-path "~/.elisp")
 (add-to-list 'load-path "~/.elisp/haskell-mode")
 (add-to-list 'load-path "~/.elisp/fuzzy-find-in-project")
+(add-to-list 'load-path "~/opt/clojure-mode")
+(add-to-list 'load-path "~/opt/slime")
+(add-to-list 'load-path "~/.elisp/full-ack")
 
+; require section
+(require 'slime)
 (require 'fuzzy-find-in-project)
 (require 'ido)
 (require 'haskell-mode)
 (require 'inf-haskell)
-
-;; clojure-mode
-(add-to-list 'load-path "~/opt/clojure-mode")
 (require 'clojure-mode)
-
 (require 'paredit)
+(require 'custom)
 
 ;; slime
 (eval-after-load "slime" 
@@ -31,8 +35,6 @@
     (read-kbd-macro paredit-backward-delete-key) nil))
 (add-hook 'slime-repl-mode-hook 'override-slime-repl-bindings-with-paredit)
 
-(add-to-list 'load-path "~/opt/slime")
-(require 'slime)
 (slime-setup)
 
 ; haskell
@@ -42,7 +44,18 @@
 	(setq tab-width 2)
 	(setq indent-tabs-mode nil)))
 
+; ack
+(autoload 'ack-same "full-ack" nil t)
+(autoload 'ack "full-ack" nil t)
+(autoload 'ack-find-same-file "full-ack" nil t)
+(autoload 'ack-find-file "full-ack" nil t)
+
+; need this because 'ack' is something different in ubuntu
+(setq ack-executable (executable-find "ack-grep"))
+
 ; fuzzy find files and grep file commands
+(fuzzy-find-project-root "~/code/clojure")
+
 (global-set-key (kbd "C-x C-n") 'fuzzy-find-in-project)
 (global-set-key (kbd "C-x C-a") 'ack)
 ; easier way of doing M-x
@@ -55,18 +68,24 @@
 (setq split-height-threshold 0)
 (setq split-width-threshold 0)
 
+; tab stuff
 (setq default-tab-width 2)
 (setq indent-tabs-mode nil)
 (setq-default indent-tabs-mode nil)
 
+; always have word wrap on
 (toggle-truncate-lines)
 
+; use chrome to browse urls
 (setq browse-url-generic-program (executable-find "google-chrome") browse-url-browser-function 'browse-url-generic)
 
+; ido settings
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)
 (ido-mode 1)
 
+; don't pollute directories with backup files...instead, but them
+; into .emacs-backup
 (defvar user-temporary-file-directory
   "~/.emacs-backup/")
 (make-directory user-temporary-file-directory t)
@@ -79,20 +98,10 @@
 (setq auto-save-file-name-transforms
       `((".*" ,user-temporary-file-directory t)))
 
-(add-to-list 'load-path "~/.elisp/full-ack")
-(autoload 'ack-same "full-ack" nil t)
-(autoload 'ack "full-ack" nil t)
-(autoload 'ack-find-same-file "full-ack" nil t)
-(autoload 'ack-find-file "full-ack" nil t)
-
-(setq ack-executable (executable-find "ack-grep"))
-
+; no menus
 (tool-bar-mode -1)
 (menu-bar-mode 0)
 
-(fuzzy-find-project-root "~/code/clojure")
-
-(require 'custom)
 (load-theme 'tango-dark)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
