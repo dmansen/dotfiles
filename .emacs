@@ -117,10 +117,3 @@
  )
 
 (load-file "~/.elisp/geiser/elisp/geiser.el")
-
-(defun my-eval-buffer ()
-  (interactive)
-  (save-excursion
-    (set-mark (point-max))
-    (beginning-of-buffer)
-    (geiser-eval-region-and-go)))
